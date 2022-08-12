@@ -2,6 +2,9 @@ myAPIKey = "6154cf8838c9c9dbac1b04b0bb7dad21";
 
 cityInputField = document.getElementById("cityInput");
 stateInputField = document.getElementById("stateInput");
+
+var currentDay = moment().format("dddd, MMMM Do YYYY");
+
 // search function to clear out the input field after clicking search button
 $("#searchBtn").on("click", function (event) {
     event.preventDefault();
@@ -12,7 +15,7 @@ $("#searchBtn").on("click", function (event) {
     cityInput = document.getElementById("cityInput").value.trim();
     stateInput = document.getElementById("stateInput").value.trim();
     searchHistory();
-    getGeoCoordinates();
+    getCurrentWeather();
     // getWeatherTest();
     cityInputField.value = "";
     stateInputField.value = "";
@@ -25,7 +28,25 @@ function searchHistory() {
     document.getElementById("history").append(btn);
 }
 
-function getGeoCoordinates() {
+// features of the current weather, still missing icon
+function getCurrentWeather() {
+    var date = $("<div>");
+    var cityName = $("<div>");
+    var temp = $("<div>");
+    var wind = $("<div>");
+    var humidity = $("<div>");
+    var uvIndex = $("<div>");
+
+    date.text(currentDay);
+    cityName.text(cityInput.toUpperCase() + ", " + stateInput.toUpperCase());
+
+    $("#current").append(date);
+    $("#current").append(cityName);
+    $("#current").append(temp);
+    $("#current").append(wind);
+    $("#current").append(humidity);
+    $("#current").append(uvIndex);
+
     geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=" + myAPIKey;
     // user inputs are incorporated into a URL which we then fetch
     fetch(geoCoordinatesURL)
@@ -38,15 +59,20 @@ function getGeoCoordinates() {
                         geoLon = data[0].lon;
                         geoLat = data[0].lat;
 
-                        // get request results in 401 error (unauthorized)
-                        weatherURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&appid=" + myAPIKey;
+                        weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + myAPIKey;
 
                         fetch(weatherURL)
                             .then(function (response) {
                                 if (response.ok) {
                                     return response.json()
-                                        .then(function (data) {
-                                            console.log(data);
+                                        .then(function (weatherData) {
+                                            console.log(weatherData);
+
+                                            temp.text("Temp: " + weatherData.current.temp + "°F");
+                                            wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
+                                            humidity.text("Humidity: " + weatherData.current.humidity + "%");
+                                            uvIndex.text("UV Index: " + weatherData.current.uvi)
+                                            // console.log(cityName);
                                         })
                                 }
                             })
