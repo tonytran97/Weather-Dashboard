@@ -22,10 +22,12 @@
       <div class="row">
       <div class="card float-start col-4">
         <h2>Search for a City:</h2>
-        <input type="text" placeholder="Search for a city here..." />
+        <form>
+        <input type="text" id="cityInput" placeholder="Search for a city here..." />
         <div class="d-grid gap-2 col-1">
-          <button class="d-grid gap-2">Search</button>
+          <button class="d-grid gap-2" id="searchBtn">Search</button>
         </div>
+      </form>
       </div>
          <!-- div for current city look up-->
       <div class="card float-end col-8">
@@ -39,7 +41,7 @@
       <!-- div for recent searches -->
       <div class="card col-4 float-start">
         <h2>Search History</h2>
-        <div></div>
+        <div id="history"></div>
       </div>
 
       <!-- div for 5-day forecast -->
