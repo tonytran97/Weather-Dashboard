@@ -39,6 +39,7 @@ function getCurrentWeather() {
 
     date.text(currentDay);
     cityName.text(cityInput.toUpperCase() + ", " + stateInput.toUpperCase());
+    document.querySelector("img").setAttribute("id", "weatherIcon");
 
     $("#current").append(date);
     $("#current").append(cityName);
@@ -71,7 +72,11 @@ function getCurrentWeather() {
                                             temp.text("Temp: " + weatherData.current.temp + "°F");
                                             wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
                                             humidity.text("Humidity: " + weatherData.current.humidity + "%");
-                                            uvIndex.text("UV Index: " + weatherData.current.uvi)
+                                            uvIndex.text("UV Index: " + weatherData.current.uvi);
+
+                                            var iconCode = weatherData.current.weather[0].icon;
+                                            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                                            $("#weatherIcon").attr('src', iconURL);
                                             // console.log(cityName);
                                         })
                                 }
