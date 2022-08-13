@@ -73,18 +73,44 @@ function getCurrentWeather() {
                                             wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
                                             humidity.text("Humidity: " + weatherData.current.humidity + "%");
                                             uvIndex.text("UV Index: " + weatherData.current.uvi);
+
+                                            // if else statements to change the color of UV Index depending on the current value
                                             if (weatherData.current.uvi === 0 || weatherData.current.uvi <= 2) {
                                                 // favorable
                                                 $("#uvIndexColor").css("background-color", "green");
                                             } else if (weatherData.current.uvi <= 5) {
                                                 // moderate
                                                 $("#uvIndexColor").css("background-color", "yellow");
+                                            } else {
                                                 // severe
-                                            } $("#uvIndexColor").css("background-color", "red");
+                                                $("#uvIndexColor").css("background-color", "red");
+                                            };
+
                                             var iconCode = weatherData.current.weather[0].icon;
                                             var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
                                             $("#weatherIcon").attr('src', iconURL);
                                             // console.log(cityName);
+                                            // generating future forecast
+                                            for (i = 1; i < 6; i++) {
+                                                var futureInfo = {
+                                                    icon: weatherData.daily[i].weather[0].icon,
+                                                    temp: weatherData.daily[i].temp.day,
+                                                    humidity: weatherData.daily[i].humidity,
+                                                }
+                                                // var iconCodeFuture = weatherData.daily[0 + i].weather[0].icon;
+                                                var iconURLFuture = `<img src="https://openweathermap.org/img/w/${futureInfo.icon}.png" />`;
+                                                var futureDates = moment().add(i, 'days').format("dddd, MMMM Do YYYY")
+                                                var futureForecast = $(`<div class="card-body">
+                                                <div>${futureDates}${iconURLFuture}</div>
+                                                <p>Temp: ${futureInfo.temp} °F</p>
+                                                <p>Humidity: ${futureInfo.humidity}\%</p>
+                                                </div>
+                                                </div>
+                                                <div>
+                                                `);
+                                                $("#future").append(futureForecast);
+                                            };
+
                                         })
                                 }
                             })
@@ -93,6 +119,8 @@ function getCurrentWeather() {
         })
 
 }
+
+
 
 // test purposes
 function getWeatherTest() {
