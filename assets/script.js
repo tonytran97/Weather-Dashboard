@@ -35,7 +35,7 @@ function getCurrentWeather() {
     var temp = $("<div>");
     var wind = $("<div>");
     var humidity = $("<div>");
-    var uvIndex = $("<div>");
+    var uvIndex = $("<div id=uvIndexColor>");
 
     date.text(currentDay);
     cityName.text(cityInput.toUpperCase() + ", " + stateInput.toUpperCase());
@@ -73,7 +73,14 @@ function getCurrentWeather() {
                                             wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
                                             humidity.text("Humidity: " + weatherData.current.humidity + "%");
                                             uvIndex.text("UV Index: " + weatherData.current.uvi);
-
+                                            if (weatherData.current.uvi === 0 || weatherData.current.uvi <= 2) {
+                                                // favorable
+                                                $("#uvIndexColor").css("background-color", "green");
+                                            } else if (weatherData.current.uvi <= 5) {
+                                                // moderate
+                                                $("#uvIndexColor").css("background-color", "yellow");
+                                                // severe
+                                            } $("#uvIndexColor").css("background-color", "red");
                                             var iconCode = weatherData.current.weather[0].icon;
                                             var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
                                             $("#weatherIcon").attr('src', iconURL);
