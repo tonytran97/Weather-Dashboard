@@ -3,7 +3,7 @@ myAPIKey = "6154cf8838c9c9dbac1b04b0bb7dad21";
 cityInputField = document.getElementById("cityInput");
 stateInputField = document.getElementById("stateInput");
 
-var currentDay = moment().format("dddd, MMMM Do YYYY");
+var currentDay = moment().format("dddd, MMMM Do");
 
 // empty array that is used to store the inputs from the current session into the localStorage, still needs work
 var locationHistory = [];
@@ -50,8 +50,10 @@ $("#searchBtn").on("click", function (event) {
 
 // takes value from input field, creates a button, and stores it under the Search History
 function searchHistory() {
+    line = document.createElement("hr");
     btn = document.createElement("button");
     btn.textContent = cityInput + "," + stateInput;
+    document.getElementById("history").append(line);
     document.getElementById("history").append(btn);
     if (!locationHistory.includes(btn.textContent)) {
         locationHistory.push(btn.textContent);
@@ -59,25 +61,23 @@ function searchHistory() {
     localStorage.setItem("location", JSON.stringify(locationHistory));
 }
 
-// features of the current weather, still missing icon
 function getCurrentWeather() {
-    var date = $("<div>");
-    var cityName = $("<div>");
+    var currentContainer = $("<div class='fs-4'>")
+    var cityName = $("<div class='text-capitalize'>");
     var temp = $("<div>");
     var wind = $("<div>");
     var humidity = $("<div>");
-    var uvIndex = $("<div id=uvIndexColor>");
+    var uvIndex = $("<div>");
 
-    date.text(currentDay);
-    cityName.text(cityInput.toUpperCase() + ", " + stateInput.toUpperCase());
+    cityName.text(cityInput + ", " + stateInput.toUpperCase() + " (" + currentDay + ")");
     document.querySelector("img").setAttribute("id", "weatherIcon");
 
-    $("#current").append(date);
-    $("#current").append(cityName);
-    $("#current").append(temp);
-    $("#current").append(wind);
-    $("#current").append(humidity);
-    $("#current").append(uvIndex);
+    $("#current").append(currentContainer);
+    $(currentContainer).append(cityName);
+    $(currentContainer).append(temp);
+    $(currentContainer).append(wind);
+    $(currentContainer).append(humidity);
+    $(currentContainer).append(uvIndex);
 
     geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=" + myAPIKey;
     // user inputs are incorporated into a URL which we then fetch
@@ -103,7 +103,14 @@ function getCurrentWeather() {
                                             temp.text("Temp: " + weatherData.current.temp + "°F");
                                             wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
                                             humidity.text("Humidity: " + weatherData.current.humidity + "%");
-                                            uvIndex.text("UV Index: " + weatherData.current.uvi);
+
+                                            var indexValue = weatherData.current.uvi;
+                                            var indexContent = $(`<p>UV Index:
+                                            <span id="uvIndexColor">${indexValue}</span>
+                                            </p>`
+                                            );
+                                            $(uvIndex).append(indexContent);
+                                            // uvIndex.text("UV Index: " + weatherData.current.uvi);
 
                                             // if else statements to change the color of UV Index depending on the current value
                                             if (weatherData.current.uvi === 0 || weatherData.current.uvi <= 2) {
@@ -130,7 +137,7 @@ function getCurrentWeather() {
                                                 }
                                                 // var iconCodeFuture = weatherData.daily[0 + i].weather[0].icon;
                                                 var iconURLFuture = `<img src="https://openweathermap.org/img/w/${futureInfo.icon}.png" />`;
-                                                var futureDates = moment().add(i, 'days').format("dddd, MMMM Do YYYY")
+                                                var futureDates = moment().add(i, 'days').format("dddd, MMMM Do")
                                                 var futureForecast = $(`<div class="card-body">
                                                 <div>${futureDates}${iconURLFuture}</div>
                                                 <p>Temp: ${futureInfo.temp} °F</p>

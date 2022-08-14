@@ -1,3 +1,9 @@
+body {
+    background-image: url("https://berthabella.com/wp-content/uploads/2017/11/Minimalist-Kite-Clouds-Desktop-Wallpaper.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 button {
     background-color: teal;
 }
@@ -5,6 +11,11 @@ button {
 hr {
     width: 30rem;
 }
+
+/* #searchCity {
+    text-align: center;
+    align-items: center;
+} */
 
 /* #weatherIcon {
     width: 4rem;

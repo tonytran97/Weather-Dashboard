@@ -13,21 +13,22 @@
   <body>
     <header>
       <div>
-        <h1>Weather Dashboard</h1>
+        <h1 class="text-center">Weather Dashboard</h1>
       </div>
     </header>
 
     <main>
       <!-- div for Search City section -->
-      <div class="row">
-      <div class="card float-start col-4">
-        <h2>Search for a City, State:</h2>
+      <div class="row justify-content-between">
+      <div class="card float-start col-4 text-center" id="searchCity">
+        <h2>Search for a City:</h2>
         <form>
         <input type="text" id="cityInput" placeholder="Search for a city here..." />
+        <br>
         <input type="text" id="stateInput" placeholder="Search for a state here..." />
-        <div class="d-grid gap-2 col-1">
+        <!-- <div class="d-grid gap-2 col-1"> -->
           <button class="d-grid gap-2" id="searchBtn">Search</button>
-        </div>
+        <!-- </div> -->
       </form>
       </div>
          <!-- div for current city look up-->
@@ -40,7 +41,7 @@
     <!-- <hr class="col-4"> -->
     <div>
       <!-- div for recent searches -->
-      <div class="card col-4 float-start">
+      <div class="card col-4 float-start text-center">
         <h2>Search History</h2>
         <div id="history"></div>
       </div>
