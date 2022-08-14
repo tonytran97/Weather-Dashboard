@@ -5,6 +5,33 @@ stateInputField = document.getElementById("stateInput");
 
 var currentDay = moment().format("dddd, MMMM Do YYYY");
 
+// empty array that is used to store the inputs from the current session into the localStorage, still needs work
+var locationHistory = [];
+
+// gathers the data from the localStorage
+function getLocation() {
+    var locationStorage = localStorage.getItem("location");
+    if (locationStorage !== null) {
+        locationArray = JSON.parse(locationStorage);
+        return locationArray;
+    } else {
+        locationArray = [];
+    }
+    return locationArray;
+}
+
+// uses localStorage data to automatically insert buttons from recent history
+function renderLocation() {
+    historyList = getLocation();
+    for (var i = 0; i < historyList.length; i++) {
+        btnHistory = document.createElement("button");
+        btnHistory.textContent = historyList[i];
+        document.getElementById("history").append(btnHistory);
+    }
+}
+
+renderLocation();
+
 // search function to clear out the input field after clicking search button
 $("#searchBtn").on("click", function (event) {
     event.preventDefault();
@@ -26,6 +53,10 @@ function searchHistory() {
     btn = document.createElement("button");
     btn.textContent = cityInput + "," + stateInput;
     document.getElementById("history").append(btn);
+    if (!locationHistory.includes(btn.textContent)) {
+        locationHistory.push(btn.textContent);
+    }
+    localStorage.setItem("location", JSON.stringify(locationHistory));
 }
 
 // features of the current weather, still missing icon
@@ -119,8 +150,6 @@ function getCurrentWeather() {
         })
 
 }
-
-
 
 // test purposes
 function getWeatherTest() {
