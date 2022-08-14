@@ -1,5 +1,3 @@
-myAPIKey = "6154cf8838c9c9dbac1b04b0bb7dad21";
-
 cityInputField = document.getElementById("cityInput");
 stateInputField = document.getElementById("stateInput");
 
@@ -43,17 +41,14 @@ $("#searchBtn").on("click", function (event) {
     stateInput = document.getElementById("stateInput").value.trim();
     searchHistory();
     getCurrentWeather();
-    // getWeatherTest();
     cityInputField.value = "";
     stateInputField.value = "";
 })
 
 // takes value from input field, creates a button, and stores it under the Search History
 function searchHistory() {
-    line = document.createElement("hr");
     btn = document.createElement("button");
     btn.textContent = cityInput + "," + stateInput;
-    document.getElementById("history").append(line);
     document.getElementById("history").append(btn);
     if (!locationHistory.includes(btn.textContent)) {
         locationHistory.push(btn.textContent);
@@ -79,7 +74,7 @@ function getCurrentWeather() {
     $(currentContainer).append(humidity);
     $(currentContainer).append(uvIndex);
 
-    geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=" + myAPIKey;
+    geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
     // user inputs are incorporated into a URL which we then fetch
     fetch(geoCoordinatesURL)
 
@@ -91,7 +86,7 @@ function getCurrentWeather() {
                         geoLon = data[0].lon;
                         geoLat = data[0].lat;
 
-                        weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + myAPIKey;
+                        weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
 
                         fetch(weatherURL)
                             .then(function (response) {
@@ -110,10 +105,9 @@ function getCurrentWeather() {
                                             </p>`
                                             );
                                             $(uvIndex).append(indexContent);
-                                            // uvIndex.text("UV Index: " + weatherData.current.uvi);
 
                                             // if else statements to change the color of UV Index depending on the current value
-                                            if (weatherData.current.uvi === 0 || weatherData.current.uvi <= 2) {
+                                            if (weatherData.current.uvi <= 2) {
                                                 // favorable
                                                 $("#uvIndexColor").css("background-color", "green");
                                             } else if (weatherData.current.uvi <= 5) {
@@ -127,7 +121,7 @@ function getCurrentWeather() {
                                             var iconCode = weatherData.current.weather[0].icon;
                                             var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
                                             $("#weatherIcon").attr('src', iconURL);
-                                            // console.log(cityName);
+
                                             // generating future forecast
                                             for (i = 1; i < 6; i++) {
                                                 var futureInfo = {
@@ -156,18 +150,4 @@ function getCurrentWeather() {
             }
         })
 
-}
-
-// test purposes
-function getWeatherTest() {
-    weatherURLTest = "https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=" + myAPIKey;
-    fetch(weatherURLTest)
-        .then(function (response) {
-            if (response.ok) {
-                return response.json()
-                    .then(function (data) {
-                        console.log(data);
-                    })
-            }
-        })
 }
