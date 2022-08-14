@@ -5,8 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather Dashboard</title>
-    <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="assets/styles.css" />
   </head>
 
@@ -20,38 +24,44 @@
     <main>
       <!-- div for Search City section -->
       <div class="row justify-content-between">
-      <div class="card float-start col-4 text-center" id="searchCity">
-        <h2>Search for a City:</h2>
-        <form>
-        <input type="text" id="cityInput" placeholder="Search for a city here..." />
-        <br>
-        <input type="text" id="stateInput" placeholder="Search for a state here..." />
-        <!-- <div class="d-grid gap-2 col-1"> -->
-          <button class="d-grid gap-2" id="searchBtn">Search</button>
-        <!-- </div> -->
-      </form>
-      </div>
-         <!-- div for current city look up-->
-      <div class="card float-end col-8" id="current">
-        <h2>Current Weather <img></h2>
-      </div>
-      
-    </div>
-   
-    <div>
-      <!-- div for recent searches -->
-      <div class="card col-4 float-start text-center">
-        <h2>Search History</h2>
-        <hr>
-        <div id="history"></div>
+        <div class="card float-start col-4 text-center" id="searchCity">
+          <h2>Search For A City:</h2>
+          <form class="d-flex flex-column">
+            <input
+              type="text"
+              id="cityInput"
+              placeholder="Search for a city here..."
+            />
+            <!-- <br /> -->
+            <input
+              type="text"
+              id="stateInput"
+              placeholder="Search for a state here..."
+            />
+            <!-- <br /> -->
+            <button class="gap-2" id="searchBtn">Search</button>
+          </form>
+        </div>
+        <!-- div for current city look up-->
+        <div class="card float-end col-8" id="current">
+          <h2>Current Weather <img /></h2>
+        </div>
       </div>
 
-      <!-- div for 5-day forecast -->
-      <div class="card col-8 float-end row">
-        <h2>Forecast</h2>
-        <div id="future" class="col-4"></div>
+      <div class="row">
+        <!-- div for recent searches -->
+        <div class="card float-start col-4 text-center">
+          <h2>Search History</h2>
+          <hr id="hr" />
+          <div id="history"></div>
+        </div>
+
+        <!-- div for 5-day forecast -->
+        <div class="card float-end col-8">
+          <h2>Forecast</h2>
+          <div id="future" class="days"></div>
+        </div>
       </div>
-    </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>

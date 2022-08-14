@@ -1,23 +1,37 @@
+main {
+    margin-top: 2rem;
+}
+
 body {
     background-image: url("https://berthabella.com/wp-content/uploads/2017/11/Minimalist-Kite-Clouds-Desktop-Wallpaper.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
+input {
+    margin: 5px 0px 5px 0px;
+    text-transform: capitalize;
+}
+
 button {
-    background-color: teal;
+    background-color: rgba(169, 221, 221, .76);
+    margin-bottom: 10px;
 }
 
-hr {
-    width: 30rem;
+form {
+    margin-top: 2.5rem;
+    margin-left: 1rem;
 }
 
-/* #searchCity {
-    text-align: center;
-    align-items: center;
-} */
+#hr {
+    margin-left: 5px;
+}
 
-/* #weatherIcon {
-    width: 4rem;
-    height: 4rem;
-} */
+.days {
+    display: flex;
+}
+
+.card-body {
+    background-color: rgba(219, 219, 209, 0.6);
+    margin: 5px 5px 10px 5px;
+}

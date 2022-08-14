@@ -38,7 +38,7 @@ $("#searchBtn").on("click", function (event) {
     };
 
     cityInput = document.getElementById("cityInput").value.trim();
-    stateInput = document.getElementById("stateInput").value.trim();
+    stateInput = document.getElementById("stateInput").value.toUpperCase().trim();
     searchHistory();
     getCurrentWeather();
     cityInputField.value = "";
@@ -48,7 +48,7 @@ $("#searchBtn").on("click", function (event) {
 // takes value from input field, creates a button, and stores it under the Search History
 function searchHistory() {
     btn = document.createElement("button");
-    btn.textContent = cityInput + "," + stateInput;
+    btn.textContent = cityInput + ", " + stateInput;
     document.getElementById("history").append(btn);
     if (!locationHistory.includes(btn.textContent)) {
         locationHistory.push(btn.textContent);
@@ -127,6 +127,7 @@ function getCurrentWeather() {
                                                 var futureInfo = {
                                                     icon: weatherData.daily[i].weather[0].icon,
                                                     temp: weatherData.daily[i].temp.day,
+                                                    wind: weatherData.daily[i].wind_speed,
                                                     humidity: weatherData.daily[i].humidity,
                                                 }
                                                 // var iconCodeFuture = weatherData.daily[0 + i].weather[0].icon;
@@ -135,6 +136,7 @@ function getCurrentWeather() {
                                                 var futureForecast = $(`<div class="card-body">
                                                 <div>${futureDates}${iconURLFuture}</div>
                                                 <p>Temp: ${futureInfo.temp} °F</p>
+                                                <p>Wind: ${futureInfo.wind} MPH</p>
                                                 <p>Humidity: ${futureInfo.humidity}\%</p>
                                                 </div>
                                                 </div>
