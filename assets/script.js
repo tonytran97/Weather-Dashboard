@@ -85,7 +85,7 @@ function getCurrentWeather() {
     $(currentContainer).append(humidity);
     $(currentContainer).append(uvIndex);
 
-    geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
+    geoCoordinatesURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityInputField.value + "," + stateInputField.value + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
     // user inputs are incorporated into a URL which we then fetch
     fetch(geoCoordinatesURL)
 
