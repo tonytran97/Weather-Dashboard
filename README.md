@@ -22,4 +22,4 @@ The weather dashboard is intended for users to lookup the weather forecast for c
 
  ![WebPage Preview](assets/weatherDashPreview.png)
 
- Here is the link of the deployed webpage: 
+ Here is the link of the deployed webpage: https://tonytran97.github.io/Weather-Dashboard/
