@@ -104,7 +104,6 @@ function getCurrentWeather() {
                                 if (response.ok) {
                                     return response.json()
                                         .then(function (weatherData) {
-                                            console.log(weatherData);
 
                                             temp.text("Temp: " + weatherData.current.temp + "°F");
                                             wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
@@ -191,7 +190,6 @@ $(document).on("click", ".historyList", function (event) {
         var uvIndex = $("<div>");
 
         cityName.text(cityString + ", " + stateString + " (" + currentDay + ")");
-        document.querySelector("img").setAttribute("id", "weatherIcon");
 
         $("#current").append(currentContainer);
         $(currentContainer).append(cityName);
