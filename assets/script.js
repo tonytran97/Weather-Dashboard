@@ -23,6 +23,7 @@ function renderLocation() {
     historyList = getLocation();
     for (var i = 0; i < historyList.length; i++) {
         btnHistory = document.createElement("button");
+        btnHistory.classList.add("historyList");
         btnHistory.textContent = historyList[i];
         document.getElementById("history").append(btnHistory);
     }
@@ -36,7 +37,9 @@ $("#searchBtn").on("click", function (event) {
     if (cityInputField.value == "" || stateInputField.value == "") {
         return;
     };
-
+    // resets the current weather and forecast boxes
+    $(".fs-4").empty();
+    $("#future").empty();
     cityInput = document.getElementById("cityInput").value.trim();
     stateInput = document.getElementById("stateInput").value.toUpperCase().trim();
     searchHistory();
@@ -48,6 +51,7 @@ $("#searchBtn").on("click", function (event) {
 // takes value from input field, creates a button, and stores it under the Search History
 function searchHistory() {
     btn = document.createElement("button");
+    btn.classList.add("historyList");
     btn.textContent = cityInput + ", " + stateInput;
     document.getElementById("history").append(btn);
     if (!locationHistory.includes(btn.textContent)) {
@@ -153,3 +157,116 @@ function getCurrentWeather() {
         })
 
 }
+
+// long complicated way to get this to work
+$(document).on("click", ".historyList", function (event) {
+    event.preventDefault();
+    $(".fs-4").empty();
+    $("#future").empty();
+    var clickHistory = $(this).text();
+    var string = JSON.stringify(clickHistory);
+    var splitString = string.split(",").shift();
+    cityString = splitString.replace('"', '');
+    var splitStringState = string.split(" ").pop();
+    stateString = splitStringState.replace('"', '');
+    console.log(stateString);
+
+    function getBtnWeather() {
+        var currentContainer = $("<div class='fs-4'>")
+        var cityName = $("<div class='text-capitalize'>");
+        var temp = $("<div>");
+        var wind = $("<div>");
+        var humidity = $("<div>");
+        var uvIndex = $("<div>");
+
+        cityName.text(cityString + ", " + stateString + " (" + currentDay + ")");
+        document.querySelector("img").setAttribute("id", "weatherIcon");
+
+        $("#current").append(currentContainer);
+        $(currentContainer).append(cityName);
+        $(currentContainer).append(temp);
+        $(currentContainer).append(wind);
+        $(currentContainer).append(humidity);
+        $(currentContainer).append(uvIndex);
+
+        geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityString + "," + stateString + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
+        // user inputs are incorporated into a URL which we then fetch
+        fetch(geoCoordinatesURL)
+
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json()
+                        .then(function (data) {
+                            // longitude and latitude of that location is then recorded into variables
+                            geoLon = data[0].lon;
+                            geoLat = data[0].lat;
+
+                            weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + geoLat + "&lon=" + geoLon + "&exclude=minutely,hourly,alerts&units=imperial&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
+
+                            fetch(weatherURL)
+                                .then(function (response) {
+                                    if (response.ok) {
+                                        return response.json()
+                                            .then(function (weatherData) {
+                                                console.log(weatherData);
+
+                                                temp.text("Temp: " + weatherData.current.temp + "°F");
+                                                wind.text("Wind: " + weatherData.current.wind_speed + " MPH");
+                                                humidity.text("Humidity: " + weatherData.current.humidity + "%");
+
+                                                var indexValue = weatherData.current.uvi;
+                                                var indexContent = $(`<p>UV Index:
+                                                <span id="uvIndexColor">${indexValue}</span>
+                                                </p>`
+                                                );
+                                                $(uvIndex).append(indexContent);
+
+                                                // if else statements to change the color of UV Index depending on the current value
+                                                if (weatherData.current.uvi <= 2) {
+                                                    // favorable
+                                                    $("#uvIndexColor").css("background-color", "green");
+                                                } else if (weatherData.current.uvi <= 5) {
+                                                    // moderate
+                                                    $("#uvIndexColor").css("background-color", "yellow");
+                                                } else {
+                                                    // severe
+                                                    $("#uvIndexColor").css("background-color", "red");
+                                                };
+
+                                                var iconCode = weatherData.current.weather[0].icon;
+                                                var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                                                $("#weatherIcon").attr('src', iconURL);
+
+                                                // generating future forecast
+                                                for (i = 1; i < 6; i++) {
+                                                    var futureInfo = {
+                                                        icon: weatherData.daily[i].weather[0].icon,
+                                                        temp: weatherData.daily[i].temp.day,
+                                                        wind: weatherData.daily[i].wind_speed,
+                                                        humidity: weatherData.daily[i].humidity,
+                                                    }
+                                                    // var iconCodeFuture = weatherData.daily[0 + i].weather[0].icon;
+                                                    var iconURLFuture = `<img src="https://openweathermap.org/img/w/${futureInfo.icon}.png" />`;
+                                                    var futureDates = moment().add(i, 'days').format("dddd, MMMM Do")
+                                                    var futureForecast = $(`<div class="card-body">
+                                                    <div>${futureDates}${iconURLFuture}</div>
+                                                    <p>Temp: ${futureInfo.temp} °F</p>
+                                                    <p>Wind: ${futureInfo.wind} MPH</p>
+                                                    <p>Humidity: ${futureInfo.humidity}\%</p>
+                                                    </div>
+                                                    </div>
+                                                    <div>
+                                                    `);
+                                                    $("#future").append(futureForecast);
+                                                };
+
+                                            })
+                                    }
+                                })
+                        })
+                }
+            })
+
+    }
+    getBtnWeather();
+})
