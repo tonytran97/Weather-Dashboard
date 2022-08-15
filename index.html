@@ -32,14 +32,14 @@
               id="cityInput"
               placeholder="Search for a city here..."
             />
-            <!-- <br /> -->
             <input
               type="text"
               id="stateInput"
               placeholder="Search for a state here..."
+              oninput="this.value = this.value.toUpperCase()"
             />
-            <!-- <br /> -->
             <button class="gap-2" id="searchBtn">Search</button>
+            <p id="alert" class="fs-4 fw-bold"></p>
           </form>
         </div>
         <!-- div for current city look up-->

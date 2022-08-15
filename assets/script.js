@@ -1,9 +1,10 @@
+// global DOM references
 cityInputField = document.getElementById("cityInput");
 stateInputField = document.getElementById("stateInput");
 
 var currentDay = moment().format("dddd, MMMM Do");
 
-// empty array that is used to store the inputs from the current session into the localStorage, still needs work
+// empty array that is used to store the inputs from the previous session, empty array also serves as a localStorage.clear() in order to prevent overcluttered search history
 var locationHistory = [];
 
 // gathers the data from the localStorage
@@ -29,21 +30,29 @@ function renderLocation() {
     }
 }
 
+// function is called during page loadup in order to pull information from localStorage
 renderLocation();
 
 // search function to clear out the input field after clicking search button
 $("#searchBtn").on("click", function (event) {
     event.preventDefault();
     if (cityInputField.value == "" || stateInputField.value == "") {
+        $("#alert").text("In order to process your request, both the city and state fields must have an input");
         return;
+    } else {
+        $("#alert").empty();
     };
     // resets the current weather and forecast boxes
     $(".fs-4").empty();
     $("#future").empty();
     cityInput = document.getElementById("cityInput").value.trim();
+    // used to capitalize the first letter of the city name for button creation
+    cityInputUpperCase = cityInput.charAt(0).toUpperCase() + cityInput.slice(1);
+    console.log(cityInputUpperCase);
     stateInput = document.getElementById("stateInput").value.toUpperCase().trim();
     searchHistory();
     getCurrentWeather();
+    // empty the input fields for a clean UI
     cityInputField.value = "";
     stateInputField.value = "";
 })
@@ -52,11 +61,10 @@ $("#searchBtn").on("click", function (event) {
 function searchHistory() {
     btn = document.createElement("button");
     btn.classList.add("historyList");
-    btn.textContent = cityInput + ", " + stateInput;
+    btn.textContent = cityInputUpperCase + ", " + stateInput;
     document.getElementById("history").append(btn);
-    if (!locationHistory.includes(btn.textContent)) {
-        locationHistory.push(btn.textContent);
-    }
+    locationHistory.push(btn.textContent);
+
     localStorage.setItem("location", JSON.stringify(locationHistory));
 }
 
@@ -153,6 +161,9 @@ function getCurrentWeather() {
                                 }
                             })
                     })
+                    .catch(function (error) {
+                        $("#alert").text("Unable to process your request, please try again with different inputs or come back at another time");
+                    })
             }
         })
 
@@ -161,15 +172,16 @@ function getCurrentWeather() {
 // long complicated way to get this to work
 $(document).on("click", ".historyList", function (event) {
     event.preventDefault();
+    // resets the current weather and forecast boxes
     $(".fs-4").empty();
     $("#future").empty();
+    // complicated method to separate the text from whichever button is clicked to a city and state string
     var clickHistory = $(this).text();
     var string = JSON.stringify(clickHistory);
     var splitString = string.split(",").shift();
     cityString = splitString.replace('"', '');
     var splitStringState = string.split(" ").pop();
     stateString = splitStringState.replace('"', '');
-    console.log(stateString);
 
     function getBtnWeather() {
         var currentContainer = $("<div class='fs-4'>")
