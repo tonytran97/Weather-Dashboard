@@ -4,7 +4,8 @@ Description
 
 The weather dashboard is intended for users to lookup the weather forecast for cities in the US so that they can plan their trip accordingly. The OpenWeather API was used to gather the coordinates of the searched city which was then utilized to search up the weather forecast. When searching for a city, the user will be presented with both the current and future forecast. 
 
-Information that will be displayed in the current weather box will include:
+- Information that will be displayed in the current weather box will include:
+
     - city name
     - date
     - an icon which represents the current weather condition
