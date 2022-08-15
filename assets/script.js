@@ -130,7 +130,7 @@ function getCurrentWeather() {
                                             };
 
                                             var iconCode = weatherData.current.weather[0].icon;
-                                            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                                            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
                                             $("#weatherIcon").attr('src', iconURL);
 
                                             // generating future forecast
@@ -200,7 +200,7 @@ $(document).on("click", ".historyList", function (event) {
         $(currentContainer).append(humidity);
         $(currentContainer).append(uvIndex);
 
-        geoCoordinatesURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityString + "," + stateString + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
+        geoCoordinatesURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityString + "," + stateString + ",US" + "&limit=5&appid=6154cf8838c9c9dbac1b04b0bb7dad21";
         // user inputs are incorporated into a URL which we then fetch
         fetch(geoCoordinatesURL)
 
@@ -245,7 +245,7 @@ $(document).on("click", ".historyList", function (event) {
                                                 };
 
                                                 var iconCode = weatherData.current.weather[0].icon;
-                                                var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                                                var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
                                                 $("#weatherIcon").attr('src', iconURL);
 
                                                 // generating future forecast
