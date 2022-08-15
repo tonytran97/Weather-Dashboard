@@ -8,6 +8,12 @@ body {
     background-size: cover;
 }
 
+#icon {
+    margin-top: 0.5rem;
+    height: 5rem;
+    width: 5rem;
+}
+
 input {
     margin: 5px 0px 5px 0px;
     text-transform: capitalize;

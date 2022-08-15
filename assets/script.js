@@ -77,7 +77,6 @@ function getCurrentWeather() {
     var uvIndex = $("<div>");
 
     cityName.text(cityInput + ", " + stateInput.toUpperCase() + " (" + currentDay + ")");
-    document.querySelector("img").setAttribute("id", "weatherIcon");
 
     $("#current").append(currentContainer);
     $(currentContainer).append(cityName);
